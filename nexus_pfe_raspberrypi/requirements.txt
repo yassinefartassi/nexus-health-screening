@@ -1,0 +1,24 @@
+streamlit
+onnxruntime
+opencv-python-headless<5   # >=5.0.0 dropped cv2.CascadeClassifier from the Python
+                            # bindings (replaced by DNN-based FaceDetectorYN) -- the
+                            # 4.x line still ships it, which src/preprocessing/face_roi.py's
+                            # Haar-cascade fallback needs. See docs/deployment.md.
+numpy
+pillow
+# face ROI detection for rPPG
+scipy            # signal filtering for CHROM/POS
+pytest            # test runner
+scikit-image      # bundled test-fixture face image, used only by tests/test_inference.py
+
+# Core inference stack is identical to the Ubuntu desktop project (nexus_pfe) --
+# src/inference/, src/preprocessing/, src/utils/ are reused unmodified. See
+# requirements-fl.txt for federated learning and requirements-rpi5.txt for
+# Raspberry Pi 5-specific additions/notes.
+#
+# mediapipe is intentionally NOT listed here: it has no wheel for Python 3.13
+# on ARM64 (Raspberry Pi 5), so it can't be installed there at all. Where a
+# desktop machine's Python version DOES support it, `pip install mediapipe`
+# on top of this file re-enables the higher-fidelity landmark-based ROI in
+# src/preprocessing/face_roi.py automatically -- no code change needed, see
+# that module's docstring.

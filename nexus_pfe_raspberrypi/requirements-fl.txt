@@ -1,0 +1,20 @@
+# Federated learning proof of concept (fl/). Install on top of
+# requirements.txt on BOTH the Ubuntu machine (runs server + optionally a
+# client) and the RPi5 (runs a client) -- see docs/deployment.md.
+#
+# Requires Python 3.10-3.13: TensorFlow's latest PyPI release (2.21.0) does
+# not yet publish wheels for 3.14+. If your default `python3` is newer than
+# that (check `python3 --version`), create this venv with an older
+# interpreter instead (pyenv, deadsnakes PPA, conda, ...) -- the base
+# requirements.txt (inference + Streamlit) has no such constraint and runs
+# fine on newer Pythons.
+flwr>=1.8          # Flower: FedAvg server (fl/server.py) + client (fl/client.py)
+tensorflow>=2.15   # trains fl/models.py's EfficientNetV2-S dermatology head locally each round
+torch>=2.2         # trains fl/torch_ops.py's ResNet-18 ocular head locally each round
+torchvision>=0.17  # resnet18() backbone for the ocular client (fl/torch_ops.py)
+pandas             # per-round convergence CSV logging (fl/server.py)
+matplotlib         # fl/plot_convergence.py
+tf2onnx            # fl/export_to_onnx.py -- re-exports the FL-aggregated .keras
+                    # checkpoint to ONNX after each server run; without this step
+                    # inference silently keeps serving the pre-FL weights (ONNX is
+                    # inference-only, it can't run the training loop itself)

@@ -1,0 +1,5 @@
+subject,video_path,gt_path,container_fps,n_frames_decoded,video_duration_s,gt_duration_s,duration_discrepancy_pct,n_windows,warning
+10-gt,UBFC-RPPG/DATASET_1/10-gt/vid.avi,UBFC-RPPG/DATASET_1/10-gt/gtdump.xmp,28.671786,1226,42.7598057546886,42.847,0.20350140105818756,33,
+11-gt,UBFC-RPPG/DATASET_1/11-gt/vid.avi,UBFC-RPPG/DATASET_1/11-gt/gtdump.xmp,28.671786,2300,80.21823265561483,80.363,0.180141787122398,70,
+6-gt,UBFC-RPPG/DATASET_1/6-gt/vid-006.avi,UBFC-RPPG/DATASET_1/6-gt/gtdump.xmp,28.637527,3368,117.6079205442565,83.49,40.86467905648162,107,"Video duration (117.6s, from container fps=28.64) diverges from gt duration (83.5s) by 41%. This is a real property of this recording, not a harness bug -- the production pipeline uses the same container fps. Evaluation is naturally limited to the gt-covered span; treat this subject's metrics with caution as a possible timestamp/fps desync rather than a genuine CHROM/POS result."
+8-gt,UBFC-RPPG/DATASET_1/8-gt/vid.avi,UBFC-RPPG/DATASET_1/8-gt/gtdump.xmp,28.671786,2102,73.31248914874016,73.692,0.5149959985613602,63,

@@ -1,0 +1,13 @@
+# Federated learning client (fl_client/). Install on top of requirements.txt
+# only if you're going to run `python -m fl_client.client` from this
+# machine -- the base Streamlit app (inference only) does not need any of
+# this. See README.md's "Federated learning" section and
+# nexus_pfe_server_fed/docs/fl_setup.md for the full runbook.
+#
+# Requires a Python version with PyPI wheels for the tensorflow/torch
+# versions below (check `python --version` first) -- the base
+# requirements.txt (inference + Streamlit) has no such constraint.
+flwr>=1.8          # Flower: FedAvg client (fl_client/client.py)
+tensorflow>=2.20   # trains fl_client/models.py's EfficientNetV2-S dermatology head locally each round
+torch>=2.2         # trains fl_client/torch_ops.py's ResNet-18 ocular head locally each round
+torchvision>=0.17  # resnet18() backbone for the ocular client (fl_client/torch_ops.py)

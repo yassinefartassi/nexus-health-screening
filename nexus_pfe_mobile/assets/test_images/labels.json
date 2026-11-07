@@ -1,0 +1,13 @@
+{
+  "_comment": "Shared ground-truth labels for img-test/, used identically by all three benchmark suites. Only 6 images total (3 dermatology, 3 ocular) -- far too few for a meaningful accuracy statistic. This exists for the CROSS-PLATFORM AGREEMENT check (do desktop/mobile/RPi5 agree with each other and with the label on identical input), not as a substitute for the real held-out test-set numbers in dermatho-assets/classification_report.txt and eyediseas-assets/confusion_matrix.png. 'images.jpg' has no reliable label from its filename -- included for agreement-only, never scored.",
+  "dermatology": {
+    "12174-rosacea.jpg": "Acne and Rosacea Photos",
+    "Atopic Dermatitis.jpg": "Atopic Dermatitis Photos",
+    "Molluscum-contagiosum_1.jpg": "Warts Molluscum and other Viral Infections"
+  },
+  "ocular": {
+    "Eyeliddisorders.jpg": "Eyelid",
+    "Uveitis.jpg": "Uveitis",
+    "images.jpg": null
+  }
+}

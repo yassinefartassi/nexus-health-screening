@@ -1,0 +1,32 @@
+# Datasets are never committed -- see DATA.md
+data/
+
+# Model weights are not committed -- available on request, see DATA.md
+*.onnx
+*.onnx.data
+*.pth
+*.pt
+*.keras
+*.dat
+*.task
+*.bz2
+
+# Runtime output
+logs/
+
+# Python
+__pycache__/
+*.pyc
+venv/
+.venv/
+
+# Secrets / local config
+.env
+.env.*
+!.env.example
+
+# OS
+.DS_Store
+
+# Download cache used by scripts/download_models.sh
+.model_cache/

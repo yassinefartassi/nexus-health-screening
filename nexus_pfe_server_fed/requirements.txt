@@ -1,0 +1,40 @@
+# NEXUS_PFE federated learning SERVER (this machine: Windows 11, FL server
+# only -- never a client, never runs inference). See docs/fl_setup.md.
+#
+# Check `python --version` against whatever Python range the pinned
+# tensorflow/torch versions below actually ship PyPI wheels for before
+# creating the venv, and install a matching interpreter if needed (Windows
+# typically defaults to whatever was last installed from python.org). Both
+# TensorFlow and PyTorch are CPU-only on Windows by default unless CUDA/
+# cuDNN are separately configured -- that's fine here, FedAvg aggregation
+# and the small per-round centralized evaluation are not compute-heavy.
+#
+# BOTH frameworks are required, not one-or-the-other: this server process
+# federates one module at a time (--model dermatology|ocular), but the same
+# installed environment must be able to run either, since dermatology is
+# TensorFlow/Keras and ocular is PyTorch -- see fl_server/modules/base.py
+# for why. The same applies to every FL client (see docs/fl_setup.md's
+# "Mixed frameworks" section for what this means for the Raspberry Pi 5).
+flwr>=1.8                 # Flower: FedAvg server (fl_server/server.py) -- framework-agnostic by design
+# tensorflow>=2.20 means Keras 3 (TF switched the tf.keras default at 2.16).
+# tf2onnx (below) was written against Keras 2 and has patchy Keras 3
+# support -- if `python -m fl_server.server --model dermatology` fails
+# specifically at the ONNX export step (fl_server/onnx_export.py's
+# export_keras_to_onnx), that's the likely cause. Known fallback: pin
+# `tensorflow>=2.15,<2.16` instead (Keras 2, PyPI wheels for Python
+# 3.9-3.11 only) until tf2onnx's Keras 3 support catches up.
+tensorflow>=2.20           # dermatology: fl_server/modules/dermatology.py
+tf2onnx>=1.16              # dermatology's ONNX export path (fl_server/onnx_export.py)
+onnx>=1.15                 # tf2onnx's output format dependency
+torch>=2.2                # ocular: fl_server/modules/ocular.py
+torchvision>=0.17         # ocular's ResNet-18 backbone (fl_server/modules/ocular.py)
+onnxscript                # required by torch>=2.6's torch.onnx.export() internals (fl_server/onnx_export.py's
+                          # export_torch_to_onnx) even for the legacy exporter path -- without it, every ocular
+                          # FL round's ONNX export step crashes with "ModuleNotFoundError: No module named
+                          # 'onnxscript'", which brings the whole server process down mid-round and takes both
+                          # clients' gRPC connections down as collateral damage. Found by actually running a
+                          # local ocular FL round end-to-end (2026-07 hardening pass).
+numpy                     # weight array manipulation, synthetic held-out sets (fl_server/datasets/)
+pandas                    # CSV log handling for fl_server/plot_convergence.py
+matplotlib                # fl_server/plot_convergence.py
+pillow                    # loading held-out test images (fl_server/datasets/)

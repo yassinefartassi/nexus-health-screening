@@ -1,0 +1,14 @@
+streamlit
+onnxruntime
+opencv-python-headless
+numpy
+pillow
+mediapipe        # face ROI detection for rPPG
+scipy            # signal filtering for CHROM/POS
+pytest            # test runner
+scikit-image      # bundled test-fixture face image, used only by tests/test_inference.py
+requests          # "Apprentissage federe" tab polls nexus_pfe_server_fed's status API (fl_client/status_client.py)
+
+# Federated learning CLIENT (fl_client/, `python -m fl_client.client`) needs
+# flwr + tensorflow + torch on top of this file -- see requirements-fl.txt.
+# Not required just to run the Streamlit app / inference / this FL status tab.

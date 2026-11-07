@@ -1,0 +1,43 @@
+# Raspberry Pi 5 (64-bit Raspberry Pi OS / Debian Bookworm) notes on top of
+# requirements.txt (+ requirements-fl.txt if this device also runs an FL
+# client). Nothing in src/inference/ or src/preprocessing/ changes for the
+# RPi5 -- same files as the Ubuntu desktop, see README.md.
+#
+# 1) Create the venv WITH --system-site-packages: picamera2 is an apt
+#    package (it wraps libcamera's C++ bindings), not something pip can
+#    build on its own.
+#
+#       python3 -m venv --system-site-packages venv
+#       source venv/bin/activate
+#
+# 2) Install picamera2 + libcamera via apt (only needed if this device's
+#    camera is the RPi camera module / rpicam, i.e. NEXUS_CAMERA_SOURCE=rpicam;
+#    not needed for NEXUS_CAMERA_SOURCE=webcam or =ip):
+#
+#       sudo apt update
+#       sudo apt install -y python3-picamera2 python3-libcamera
+#
+# 3) Then install the same Python requirements as the desktop:
+#
+#       pip install -r requirements.txt
+#       pip install -r requirements-fl.txt   # only on devices running an FL client
+#
+# onnxruntime, tensorflow, and opencv-python-headless (<5, see below) all
+# publish official aarch64/arm64 wheels on PyPI for Python 3.13 (onnxruntime
+# >= 1.16, tensorflow >= 2.15) -- confirmed on-device, no manual
+# cross-compilation or piwheels.org fallback needed for anything in
+# requirements.txt.
+#
+# mediapipe is NOT in requirements.txt and must not be added here: it
+# publishes no wheel at all for Python 3.13 on ARM64, so `pip install
+# mediapipe` has nothing to install on this device (confirmed on-device).
+# src/preprocessing/face_roi.py detects this automatically at import time
+# and falls back to an OpenCV Haar cascade -- no action needed, see
+# docs/deployment.md section 1. This is also why requirements.txt pins
+# `opencv-python-headless<5`: OpenCV 5.0.0 dropped cv2.CascadeClassifier,
+# which that fallback needs.
+#
+# TensorFlow on RPi5 (8GB): fl/models.py freezes the EfficientNetV2-S
+# backbone and only trains a small head, so local FL rounds are CPU-feasible
+# on the RPi5's Cortex-A76 cores, just noticeably slower than the Ubuntu
+# machine -- expected for this proof of concept, not a bug.

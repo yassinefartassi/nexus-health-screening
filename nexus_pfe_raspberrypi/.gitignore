@@ -1,0 +1,9 @@
+venv/
+__pycache__/
+*.pyc
+.pytest_cache/
+.streamlit/
+fl/logs/*.csv
+fl/logs/*.png
+fl/logs/*.keras
+fl/logs/*.onnx

@@ -1,0 +1,6 @@
+pandas        # windowed BPM series / CSV I/O for evaluation/eval_rppg_ubfc.py
+matplotlib    # Bland-Altman + scatter plots for evaluation/eval_rppg_ubfc.py
+
+# Extra deps for the rPPG evaluation harness (evaluation/), on top of the
+# base requirements.txt (opencv-python-headless, mediapipe, scipy, numpy).
+# Not required to run the Streamlit app itself.
